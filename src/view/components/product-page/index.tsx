@@ -32,7 +32,6 @@ export const ProductPage: FC = () => {
 
     const addToCompareList = useCallback((id: string) => {
         const product = linkedProducts.find(item => item.id === id);
-        console.log(product)
         if(product) {
             dispatch(addProductToCompareList(product))
         }
