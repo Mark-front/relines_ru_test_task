@@ -1,6 +1,12 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {LinkedProduct, Product} from '../../models';
-import {getCategories, getLinkedProducts, getProduct} from "../actions/product-page";
+import {
+    addProductToCompareList,
+    getCategories,
+    getLinkedProducts,
+    getProduct,
+    removeProductToCompareList
+} from "../actions/product-page";
 import {Category} from "../../gateways/models/category";
 import {MappingProducts} from "../../use-cases/MappingProducts";
 
@@ -28,9 +34,6 @@ export const productPageSlice = createSlice({
         setLinkedProducts: (state, action) => {
             state.linkedProducts = action.payload;
         },
-        addProductToCompareList: (state, action) => {
-            state.comparingProducts = [...(state.comparingProducts || []), action.payload];
-        },
     },
     extraReducers: (builder) => {
         builder
@@ -42,6 +45,13 @@ export const productPageSlice = createSlice({
             })
             .addCase(getCategories.fulfilled, (state, action: PayloadAction<Category[]>) => {
                 state.categories = [...action.payload];
+            })
+            .addCase(addProductToCompareList, (state, action) => {
+                if(state.comparingProducts && state.comparingProducts.find(item => item.id === action.payload.id)) return
+                state.comparingProducts = [...(state.comparingProducts || []), action.payload];
+            })
+            .addCase(removeProductToCompareList, (state, action) => {
+                state.comparingProducts = [...(state.comparingProducts || []).filter(item => item.id !== action.payload)]
             })
     },
 })

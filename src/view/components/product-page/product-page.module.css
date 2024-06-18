@@ -1,5 +1,17 @@
 .container {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
     gap: 10px;
+}
+
+.list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    min-width: fit-content;
+    & > * {
+        flex-grow: 1;
+        flex-shrink: 0;
+    }
 }

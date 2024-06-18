@@ -3,22 +3,22 @@ import cls from './product-card.module.css';
 import {Product} from "../../../../models";
 
 interface ProductProps extends Product {
-    className?: string;
+    handleRemove?: (id: string) => void
 }
 
 export const ProductCard = memo((props: ProductProps) => {
     const {
-        category,
         name,
         id,
         price,
-        className,
+        handleRemove
     } = props;
 
     return (
         <div className={cls.product}>
             <h3>{name}</h3>
             Price {price}
+            {!!handleRemove && <button onClick={() => handleRemove(id)}> remove </button>}
         </div>
     );
 })

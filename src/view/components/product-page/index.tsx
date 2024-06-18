@@ -1,9 +1,19 @@
-import {FC, useEffect} from 'react';
+import {FC, useCallback, useEffect} from 'react';
 import {useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
 import {dispatch} from "../../../store";
-import {getCategories, getLinkedProducts, getProduct} from "../../../store/actions/product-page";
-import {categoriesSelector, linkedProductsSelector, productSelector} from "../../../store/selectors/product-page";
+import {
+    addProductToCompareList,
+    getCategories,
+    getLinkedProducts,
+    getProduct, removeProductToCompareList
+} from "../../../store/actions/product-page";
+import {
+    categoriesSelector,
+    compareListSelector,
+    linkedProductsSelector,
+    productSelector
+} from "../../../store/selectors/product-page";
 import cls from './product-page.module.css'
 import {ProductCard} from "./product-card/product-card";
 import {MappingProducts} from "../../../use-cases/MappingProducts";
@@ -13,19 +23,24 @@ export const ProductPage: FC = () => {
     let {productId = ''} = useParams();
     const product = useSelector(productSelector)
     const linkedProducts = useSelector(linkedProductsSelector)
-    const categories = useSelector(categoriesSelector)
+    const compareList = useSelector(compareListSelector)
 
     useEffect(() => {
         dispatch(getProduct(productId))
         dispatch(getLinkedProducts(productId))
-        dispatch(getCategories())
     }, []);
 
-    useEffect(() => {
-        console.log(linkedProducts)
-    }, [product,
-        linkedProducts,
-        categories,]);
+    const addToCompareList = useCallback((id: string) => {
+        const product = linkedProducts.find(item => item.id === id);
+        console.log(product)
+        if(product) {
+            dispatch(addProductToCompareList(product))
+        }
+    }, [linkedProducts])
+
+    const removeFromCompareList = useCallback((id: string) => {
+            dispatch(removeProductToCompareList(id))
+    }, [])
 
     return <>
         <div className={cls.container}>
@@ -38,19 +53,23 @@ export const ProductPage: FC = () => {
                         category={product?.category}
                     />
                 }
-                {/*{linkedProducts.map(item => (*/}
-                {/*    <ProductCard*/}
-                {/*        key={item.id}*/}
-                {/*        id={item?.id}*/}
-                {/*        name={item?.name}*/}
-                {/*        price={item?.price}*/}
-                {/*        category={item?.category}*/}
-                {/*    />*/}
-                {/*))}*/}
-
-
+                <div className={cls.list}>
+                    {compareList.map((item, index) => (
+                        <ProductCard
+                            key={item.id + item.name + index}
+                            id={item?.id}
+                            name={item?.name}
+                            price={item?.price}
+                            category={item?.category}
+                            handleRemove={removeFromCompareList}
+                        />
+                    ))}
+                </div>
             </>
         </div>
-        <ListProducts products={linkedProducts}/>
+        <ListProducts
+            products={linkedProducts}
+            addToCompareList={addToCompareList}
+        />
     </>;
 };

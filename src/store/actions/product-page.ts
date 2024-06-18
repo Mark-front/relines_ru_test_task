@@ -12,6 +12,10 @@ export const addProductToCompareList = createAction<Product>(
   'product-card-page/add-product-card-to-compare-list',
 );
 
+export const removeProductToCompareList = createAction<string>(
+    'product-card-page/remove-product-card-to-compare-list',
+);
+
 export const getProduct = createAsyncThunk(
     'product-card-page/get-products',
     async (id: string) => {
