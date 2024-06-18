@@ -54,6 +54,7 @@ export const ProductPage: FC = () => {
                     />
                 }
                 <div className={cls.list}>
+                    <span>Сравнение</span>
                     {compareList.map((item, index) => (
                         <ProductCard
                             key={item.id + item.name + index}

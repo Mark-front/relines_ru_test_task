@@ -1,8 +1,9 @@
-import React, {memo, useCallback, useState} from 'react';
+import React, {memo, useCallback, useEffect, useState} from 'react';
 import cls from './list-products.module.css';
 import {LinkedProduct} from "../../../../models";
 import {Modal} from "../../common/modal";
 import {ProductCard} from "../product-card/product-card";
+import {useLessThenMediaQuery} from "../../../hooks/media-query";
 
 interface ListProductsProps {
     products: LinkedProduct[]
@@ -19,11 +20,11 @@ export const ListProducts = memo((props: ListProductsProps) => {
         products = [],
         addToCompareList,
     } = props;
-
+    const history = window.history
     const [productInModal, setProductInModal] = useState<LinkedProduct | null>(null);
 
     const handleItemClick = useCallback((item: LinkedProduct) => {
-        if(item.linkType === 'analog') {
+        if (item.linkType === 'analog') {
             addToCompareList(item.id)
         } else {
             setProductInModal(item)
@@ -31,6 +32,21 @@ export const ListProducts = memo((props: ListProductsProps) => {
     }, [addToCompareList])
 
     const handleModalClose = useCallback(() => setProductInModal(() => null), [])
+
+    const isMobile = useLessThenMediaQuery(450)
+
+    useEffect(() => {
+        if(isMobile) {
+            history.pushState({}, '');
+            window.onpopstate = function(event) {
+                if(event.state){
+                    setProductInModal(() => null)
+                } else {
+                    history.pushState({}, '', window.location.href);
+                }
+            };
+        }
+    }, []);
 
     return (
         <>
@@ -45,13 +61,15 @@ export const ListProducts = memo((props: ListProductsProps) => {
                 })}
             </ul>
 
-            {!!productInModal && <Modal onClose={handleModalClose}>
-                <ProductCard
-                    name={productInModal.name}
-                    id={productInModal.id}
-                    price={productInModal.price}
-                />
-            </Modal>}
+            {!!productInModal &&
+                <Modal onClose={handleModalClose}>
+                    <ProductCard
+                        name={productInModal.name}
+                        id={productInModal.id}
+                        price={productInModal.price}
+                    />
+                </Modal>
+            }
         </>
     );
 })

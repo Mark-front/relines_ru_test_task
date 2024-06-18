@@ -6,6 +6,7 @@
 }
 
 .list {
+    position: relative;
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
@@ -13,5 +14,11 @@
     & > * {
         flex-grow: 1;
         flex-shrink: 0;
+    }
+
+    & > span {
+        position: absolute;
+        left: 0;
+        top: -1.2em;
     }
 }
