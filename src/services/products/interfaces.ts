@@ -1,4 +1,4 @@
-import { Category, Product } from '../../models';
+import {Category, LinkedProduct, Product} from '../../models';
 
 /**
  * Интерфейс репозитория для получения данных для страницы товара
@@ -17,3 +17,9 @@ export interface IProductPageRepository {
    */
   getCategories(): Promise<Category[]>;
 }
+
+export interface IMappingProducts {
+
+  getMappingProducts():void
+}
+

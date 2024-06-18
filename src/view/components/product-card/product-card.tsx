@@ -1,9 +1,6 @@
 import React, {memo, useEffect} from 'react';
 import cls from './product-card.module.css';
 import {Product} from "../../../models";
-import {dispatch} from "../../../store";
-import {fetchProduct} from "../../../store/actions/product-page";
-import {useParams} from "react-router-dom";
 
 interface ProductProps extends Product {
     className?: string;

@@ -1,5 +1,5 @@
 import { RootState } from '..';
-import { LinkedProduct, Product } from '../../models';
+import {Category, LinkedProduct, Product} from '../../models';
 
 const productPageSelector = (state: RootState) => state.productPage;
 
@@ -10,3 +10,5 @@ export const linkedProductsSelector = (state: RootState): LinkedProduct[] =>
 
 export const compareListSelector = (state: RootState): Product[] =>
   productPageSelector(state).comparingProducts || [];
+export const categoriesSelector = (state: RootState): Category[] =>
+  productPageSelector(state).categories || [];
