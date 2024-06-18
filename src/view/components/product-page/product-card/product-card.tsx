@@ -1,6 +1,6 @@
 import React, {memo, useEffect} from 'react';
 import cls from './product-card.module.css';
-import {Product} from "../../../models";
+import {Product} from "../../../../models";
 
 interface ProductProps extends Product {
     className?: string;

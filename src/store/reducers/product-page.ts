@@ -2,6 +2,7 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {LinkedProduct, Product} from '../../models';
 import {getCategories, getLinkedProducts, getProduct} from "../actions/product-page";
 import {Category} from "../../gateways/models/category";
+import {MappingProducts} from "../../use-cases/MappingProducts";
 
 type CatalogPageState = {
     product: Product | undefined;
@@ -36,9 +37,8 @@ export const productPageSlice = createSlice({
             .addCase(getProduct.fulfilled, (state, action) => {
                 state.product = action.payload;
             })
-            .addCase(getLinkedProducts.fulfilled, (state, action: PayloadAction<Product[]>) => {
-                //@ts-ignore
-                state.linkedProducts = [...action.payload];
+            .addCase(getLinkedProducts.fulfilled, (state, action) => {
+                state.linkedProducts = new MappingProducts(state.product?.categoryId, action.payload).getMappingProducts();
             })
             .addCase(getCategories.fulfilled, (state, action: PayloadAction<Category[]>) => {
                 state.categories = [...action.payload];
