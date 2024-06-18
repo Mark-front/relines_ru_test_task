@@ -25,13 +25,18 @@ export const ListProducts = memo((props: ListProductsProps) => {
 
     const handleItemClick = useCallback((item: LinkedProduct) => {
         if (item.linkType === 'analog') {
+            console.log('Добавление в сравнение товара')
             addToCompareList(item.id)
         } else {
+            console.log('Открытые модального окна')
             setProductInModal(item)
         }
     }, [addToCompareList])
 
-    const handleModalClose = useCallback(() => setProductInModal(() => null), [])
+    const handleModalClose = useCallback(() => {
+        console.log('Закрытие модального окна')
+        setProductInModal(() => null)
+    }, [])
 
     const isMobile = useLessThenMediaQuery(450)
 
@@ -40,6 +45,7 @@ export const ListProducts = memo((props: ListProductsProps) => {
             history.pushState({}, '');
             window.onpopstate = function(event) {
                 if(event.state){
+                    console.log('Закрытие модального окна')
                     setProductInModal(() => null)
                 } else {
                     history.pushState({}, '', window.location.href);

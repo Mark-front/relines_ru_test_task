@@ -25,6 +25,7 @@ export const ProductPage: FC = () => {
     const linkedProducts = useSelector(linkedProductsSelector)
     const compareList = useSelector(compareListSelector)
 
+    console.log('Загружена страница товара ', productId)
     useEffect(() => {
         dispatch(getProduct(productId))
         dispatch(getLinkedProducts(productId))

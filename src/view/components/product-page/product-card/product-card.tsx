@@ -18,7 +18,10 @@ export const ProductCard = memo((props: ProductProps) => {
         <div className={cls.product}>
             <h3>{name}</h3>
             Price {price}
-            {!!handleRemove && <button onClick={() => handleRemove(id)}> remove </button>}
+            {!!handleRemove && <button onClick={() => {
+                handleRemove(id)
+                console.log('удаление товара из сравнения ', id)
+            }}> remove </button>}
         </div>
     );
 })
